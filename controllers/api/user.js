@@ -1,8 +1,9 @@
 'use strict';
 
+const mongoose = require('mongoose');
 const _ = require('lodash');
 const User = require('../../models/user');
-
+const objectId = mongoose.types.ObjectId;
 
 exports.create = (req, res) => {
   let data = _.pick(req.body, 'name', 'email', 'password');
@@ -35,4 +36,37 @@ exports.create = (req, res) => {
 
 exports.one = (req, res) => {
   let user = req.user;
+
+  User.findOne({ _id: user._id })
+    .exec()
+    .then((me) => {
+      if(!me) {
+        res.status(404).json({ message: "User not found" });
+        res.end();
+      } else {
+        res.status(200).json(me);
+        res.end();
+      }
+    });
+};
+
+exports.find = (req, res) => {
+  let id = req.params.id;
+
+  if(!objectId.isValid(id)) {
+    res.status(404).json({ message: "ID incorrect" });
+    res.end();
+  } else {
+    User.findOne({ _id: id })
+      .exec()
+      .then((user) => {
+        if(!user) {
+        res.status(404).json({ message: "User not found" });
+        res.end();
+      } else {
+        res.status(200).json(me);
+        res.end();
+      }
+      });
+  }
 };
