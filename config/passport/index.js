@@ -15,6 +15,11 @@ module.exports = () => {
   });
 
   // Strategies Auth
-  debug('Loaded Strategies');
+  debug('Loading Strategies');
   require('./strategies/email-api');
 };
+
+module.exports.authenticate = (strategy) => passport.authenticate(strategy, {
+  session: false,
+  failureRedirect: '/api/auth/unauthorized'
+});

@@ -2,9 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const controller = require('../../controllers/api/auth');
 
-router.get('/', (req, res) => {
-  res.status(200).json({ message: "HELLO WORLD"});
-});
+router.get('/unauthorized', controller.unauthorized);
+
+router.post('/', passport.authenticate('email-api'), controller.auth);
 
 module.exports = router;
