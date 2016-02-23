@@ -3,12 +3,14 @@
 const debug = require('debug')('pandora:jwt-api');
 const passport = require('passport');
 const JWTStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../../../models/user');
 const config = require('config');
 
 module.exports = () => {
   passport.use('jwt-api', new JWTStrategy({
     secretOrKey: config.hash.jwt,
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
     audience: 'api'
   },
   (jwtPayload, done) => {

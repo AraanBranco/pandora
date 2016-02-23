@@ -10,3 +10,5 @@ router.post('/', controller.create);
 
 router.get('/', passport.authenticate('jwt-api'), controller.one);
 router.get('/:id', passport.authenticate('jwt-api'), controller.find);
+
+module.exports = router;

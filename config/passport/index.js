@@ -16,7 +16,8 @@ module.exports = () => {
 
   // Strategies Auth
   debug('Loading Strategies');
-  require('./strategies/email-api');
+  require('./strategies/email-api')();
+  require('./strategies/jwt-api')();
 };
 
 module.exports.authenticate = (strategy) => passport.authenticate(strategy, {

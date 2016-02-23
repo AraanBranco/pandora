@@ -3,13 +3,15 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const User = require('../../models/user');
-const objectId = mongoose.types.ObjectId;
+const objectId = mongoose.Types.ObjectId;
 
 exports.create = (req, res) => {
   let data = _.pick(req.body, 'name', 'email', 'password');
   data.role = 'user';
 
   let user = new User(data);
+
+  user.password = user.generate(data.password);
 
   let savePromise = User.findOne({ email: user.email})
     .then((existUser) => {
@@ -23,7 +25,7 @@ exports.create = (req, res) => {
     .then((document) => {
       res.status(200).json({
         message: 'User created',
-        user: _.omit(document, 'password');
+        user: _.omit(document.toObject({virtuals: true}), 'password')
       });
       res.end();
     })
@@ -44,7 +46,7 @@ exports.one = (req, res) => {
         res.status(404).json({ message: "User not found" });
         res.end();
       } else {
-        res.status(200).json(me);
+        res.status(200).json(_.omit(me.toObject({virtuals: true}), 'password'));
         res.end();
       }
     });
@@ -64,7 +66,7 @@ exports.find = (req, res) => {
         res.status(404).json({ message: "User not found" });
         res.end();
       } else {
-        res.status(200).json(me);
+        res.status(200).json(_.omit(user.toObject({virtuals: true}), 'password'));
         res.end();
       }
       });
