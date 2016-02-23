@@ -1,5 +1,6 @@
 'use strict';
 
+const debug = require('debug')('pandora:passport');
 const passport = require('passport');
 
 module.exports = () => {
@@ -14,5 +15,6 @@ module.exports = () => {
   });
 
   // Strategies Auth
+  debug('Loaded Strategies');
   require('./strategies/email-api');
 };

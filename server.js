@@ -31,7 +31,11 @@ app.use((req, res) => {
   res.end();
 });
 
+// Passport strategies
 require('./config/passport')();
+
+// Mongodb
+require('./config/db').mongodb();
 
 app.listen(port, function() {
   console.log(`The PANDORA is open on port ${port}`);
