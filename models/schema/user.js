@@ -7,6 +7,8 @@ const schema = new mongoose.Schema({
   email: { type: String, require: true },
   password: { type: String },
   role: { type: String, enum: ['user', 'admin'], require: true },
+  interests: { type: Array },
+  location: { type: [Number], index: '2dsphere' },
   created_at: { type: Date, default: Date.now }
 });
 

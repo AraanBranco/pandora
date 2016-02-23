@@ -72,3 +72,37 @@ exports.find = (req, res) => {
       });
   }
 };
+
+exports.update = (req, res) => {
+  let user = req.user;
+
+  user = _.extend(user, req.body);
+
+  user.save((err) => {
+    if(err) {
+      res.status(500).json({ message: "User not update", error: err });
+      res.end();
+    }
+
+    res.status(200).json({ message: "User updated", user: user});
+    res.end();
+  });
+};
+
+exports.delete = (req, res) => {
+  let user = req.user;
+
+  User.findOne({ _id: user._id })
+    .exec()
+    .then((me) => {
+      me.remove((err) => {
+        if(err) {
+          res.status(500).json({ message: "User not deleted", error: err });
+          res.end();
+        }
+
+        res.status(200).json({ message: "User deleted" });
+        res.end();
+      });
+    });
+};
