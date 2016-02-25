@@ -6,7 +6,7 @@ const User = require('../../models/user');
 const objectId = mongoose.Types.ObjectId;
 
 exports.create = (req, res) => {
-  let data = _.pick(req.body, 'name', 'email', 'password');
+  let data = _.pick(req.body, 'name', 'email', 'password', 'interests');
   data.role = 'user';
 
   let user = new User(data);
@@ -23,6 +23,20 @@ exports.create = (req, res) => {
   savePromise
     .then(() => user.save())
     .then((document) => {
+
+      // _.each(document.interests, (interest, k) => {
+      //   neo4j.save({
+      //     name: document.name,
+      //     email: document.email,
+      //     interest: interest
+      //   },
+      //   'Interest',
+      //   (err, response) => {
+      //     console.log("err neo4j: ", err);
+      //     console.log("response: ", response);
+      //   });
+      // });
+
       res.status(200).json({
         message: 'User created',
         user: _.omit(document.toObject({virtuals: true}), 'password')

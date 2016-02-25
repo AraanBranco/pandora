@@ -1,0 +1,30 @@
+version: '2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/pandora
+    command: npm start
+    links:
+      - mongodb
+      - neo4j
+    environment:
+      NODE_PATH: /pandora
+      NODE_BCRYPT_SALT: $$2a$$10$$kbqXUJZ2TR8r4pf4SMFtFO
+      NODE_JWT_SALT: $$2a$$10$$GQv1Kb.SUCkoirbxsX5JTu
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  neo4j:
+    image: tpires/neo4j
+    cap_add:
+     - SYS_RESOURCE
+    ports:
+    - "7474:7474"

@@ -37,9 +37,6 @@ require('./config/passport')();
 // Mongodb
 require('./config/db').mongodb();
 
-// Neo4J
-require('./config/db').neo4j();
-
 app.listen(port, function() {
   console.log(`The PANDORA is open on port ${port}`);
 });

@@ -2,14 +2,12 @@
 
 const debug = require('debug')('pandora:databases');
 const mongoose = require('mongoose');
-const neo4j = require('neo4j');
 mongoose.Promise = require('bluebird');
-const config = require('config');
 
 exports.mongodb = (options) => {
   debug('Mongodb initialize');
   options = options || { server: { poolSize: 10}};
-  mongoose.connect(config.databases.mongodb.host, options);
+  mongoose.connect('mongodb://mongodb:2017/pandora', options);
 
   const db = mongoose.connection;
 
@@ -36,9 +34,4 @@ exports.mongodb = (options) => {
     });
   });
 
-};
-
-exports.neo4j = () => {
-  debug('Neo4J initialize');
-  const db = new neo4j.GraphDatabase(config.databases.neo4j.host);
 };

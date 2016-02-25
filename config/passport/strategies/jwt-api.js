@@ -5,11 +5,10 @@ const passport = require('passport');
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const User = require('../../../models/user');
-const config = require('config');
 
 module.exports = () => {
   passport.use('jwt-api', new JWTStrategy({
-    secretOrKey: config.hash.jwt,
+    secretOrKey: process.env.NODE_JWT_SALT,
     jwtFromRequest: ExtractJwt.fromAuthHeader(),
     audience: 'api'
   },

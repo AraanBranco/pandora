@@ -5,7 +5,6 @@ const schema = require('./schema/user');
 const crypt = require('../helpers/crypt');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 
 // Methods
 schema.methods.generate = function(password) {
@@ -19,7 +18,7 @@ schema.methods.comparePassword = function(password) {
 schema.methods.getToken = function() {
   let token = _.pick(this.toObject(), '_id');
   token.aud = 'api';
-  return jwt.sign(token, config.hash.jwt);
+  return jwt.sign(token, process.env.NODE_JWT_SALT);
 };
 
 const Model = mongoose.model('User', schema);
